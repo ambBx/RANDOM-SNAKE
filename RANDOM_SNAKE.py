@@ -1,10 +1,11 @@
 import pygame
+import sys
 from random import randint
 SIZE_BLOCK = 20
 PALE_GREEN = (152,251,152)
 
-size = [360,350]
-COUNT_BLOCKS = 16
+size = [350,350]
+COUNT_BLOCKS = 14
 MARGIN=1
 def getR_COLOR():
     d=(randint(0,255),randint(0,255),randint(0,255))
@@ -21,7 +22,9 @@ class SnakeBlock:
     def __init__(self,x,y):
         self.x=x
         self.y=y
-snake_blocks = [SnakeBlock(9,9), SnakeBlock(9,10)]
+    def is_inside(self):
+        return 0<=self.x<=COUNT_BLOCKS and 0<=self.y<=COUNT_BLOCKS
+snake_blocks = [SnakeBlock(9,9),SnakeBlock(9,9), SnakeBlock(9,10)]
 d_row=0
 d_col=1
               
@@ -29,7 +32,7 @@ def draw_block(color,row,column):
     pygame.draw.rect(screen,color,[10+column*SIZE_BLOCK+MARGIN*(column+1),5+row*SIZE_BLOCK+MARGIN*(row+1),SIZE_BLOCK,SIZE_BLOCK])        
 while True:
     for event in pygame.event.get():
-        print (pygame.event.event_name(event.type))
+        #print (pygame.event.event_name(event.type))
         if event.type == pygame.QUIT:
             pygame.quit()
         elif event.type == pygame.KEYDOWN:
@@ -46,8 +49,10 @@ while True:
                 d_row = 0
                 d_col = 1
 
+
     screen.fill(FRAME_COLOR)
 
+   
     for row in range(COUNT_BLOCKS):
         
         for column in range(COUNT_BLOCKS):
@@ -60,17 +65,22 @@ while True:
             else:
                 color=R_COLOR2
           
-
-            
         
             draw_block(color,row,column)
-
+        
+    head = snake_blocks[-1]
+    if not head.is_inside():
+        print('crash')
+        pygame.quit()
+        sys.exit()
+        
     for block in snake_blocks:
         draw_block(SNAKE_COLOR,block.x,block.y)
-    head = snake_blocks[-1]
+    
     new_head = SnakeBlock(head.x + d_row, head.y + d_col)
     snake_blocks.append(new_head)
     snake_blocks.pop(0)
+    print(head.x,head.y)
 
     pygame.display.flip()
-    timer.tick(7)
+    timer.tick(1)
