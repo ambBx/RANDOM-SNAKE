@@ -3,8 +3,8 @@ from random import randint
 SIZE_BLOCK = 20
 PALE_GREEN = (152,251,152)
 
-size = [350,350]
-COUNT_BLOCKS = 14
+size = [360,350]
+COUNT_BLOCKS = 16
 MARGIN=1
 def getR_COLOR():
     d=(randint(0,255),randint(0,255),randint(0,255))
@@ -48,16 +48,20 @@ while True:
 
     screen.fill(FRAME_COLOR)
 
-    for row in range(COUNT_BLOCKS+2):
+    for row in range(COUNT_BLOCKS):
         
-        
-        for column in range(COUNT_BLOCKS+2):
-            if column%2==0:
+        for column in range(COUNT_BLOCKS):
+            
+            if column%2==0 and row%2!=0:
                 color=R_COLOR1
-            elif row%2==0:
-                color=R_COLOR2
+            elif column%2!=0 and row%2==0:
+                color=R_COLOR1
+    
             else:
-                color=R_COLOR1
+                color=R_COLOR2
+          
+
+            
         
             draw_block(color,row,column)
 
