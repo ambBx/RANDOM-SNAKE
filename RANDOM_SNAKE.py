@@ -52,13 +52,14 @@ def getRandomEmptyBlock():
         empty_block.y = randint(0, COUNT_BLOCKS - 1)
     return empty_block
 
+
 def showMenu():
-    menuTheme = pygame_menu.Theme(background_color=getR_COLOR(), 
-                title_background_color=getR_COLOR(),
-                title_font_shadow=True,
-                widget_padding=25)
+    menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
+                                  title_background_color=getR_COLOR(),
+                                  title_font_shadow=True,
+                                  widget_padding=25)
     menu = pygame_menu.Menu('ZZZмейка', 350, 350,
-                        theme=menuTheme)
+                            theme=menuTheme)
 
     menu.add.text_input('Имя :', default='Игрок')
 
@@ -66,6 +67,9 @@ def showMenu():
     menu.add.button('Выход', pygame_menu.events.EXIT)
 
     menu.mainloop(screen)
+
+def gameOver():
+    showMenu()
 
 def start_the_game():
     snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
@@ -111,7 +115,8 @@ def start_the_game():
 
         head = snake_blocks[-1]
         if not head.is_inside():
-            showMenu()
+            gameOver()
+
 
         FOOD_RCOLOR = getR_COLOR()
         draw_block(FOOD_RCOLOR, food.x, food.y)
@@ -124,11 +129,14 @@ def start_the_game():
             draw_block(SNAKE_COLOR, block.x, block.y)
 
         new_head = SnakeBlock(head.x + d_row, head.y + d_col)
+        if new_head in snake_blocks:
+            gameOver()
         snake_blocks.append(new_head)
         snake_blocks.pop(0)
-        print(head.x, head.y)
+        
 
         pygame.display.flip()
         timer.tick(5)
+
 
 showMenu()
