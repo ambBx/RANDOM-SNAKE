@@ -53,8 +53,12 @@ def getRandomEmptyBlock():
     return empty_block
 
 def showMenu():
-    menu = pygame_menu.Menu('Welcome', 350, 350,
-                        theme=pygame_menu.themes.THEME_BLUE)
+    menuTheme = pygame_menu.Theme(background_color=getR_COLOR(), 
+                title_background_color=getR_COLOR(),
+                title_font_shadow=True,
+                widget_padding=25)
+    menu = pygame_menu.Menu('ZZZмейка', 350, 350,
+                        theme=menuTheme)
 
     menu.add.text_input('Имя :', default='Игрок')
 
