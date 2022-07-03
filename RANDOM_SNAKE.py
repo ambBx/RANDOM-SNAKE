@@ -13,20 +13,12 @@ PALE_GREEN = (152, 251, 152)
 size = [350, 350]
 COUNT_BLOCKS = 16
 MARGIN = 1
+snake_blocks = []
 
 
 def getR_COLOR():
     d = (randint(0, 255), randint(0, 255), randint(0, 255))
     return(d)
-
-
-class SnakeBlock:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __eq__(self,other):
-        return isinstance(other, SnakeBlock) and self.x == other.x and self.y == other.y
 
 
 def draw_block(color, row, column):
@@ -47,19 +39,23 @@ class SnakeBlock:
     def is_inside(self):
         return 0 <= self.x < COUNT_BLOCKS and 0 <= self.y < COUNT_BLOCKS
 
+    def __eq__(self, other):
+        return isinstance(other, SnakeBlock) and self.x == other.x and self.y == other.y
+
 
 def getRandomEmptyBlock():
-    x = random.randint(0, COUNT_BLOCKS - 1)
-    y = random.randint(0, COUNT_BLOCKS - 1)
+    x = randint(0, COUNT_BLOCKS - 1)
+    y = randint(0, COUNT_BLOCKS - 1)
     empty_block = SnakeBlock(x, y)
     while empty_block in snake_blocks:
-        empty_block.x = random.randint(0, COUNT_BLOCKS - 1)
-        empty_block.y = random.randint(0, COUNT_BLOCKS - 1)
+        empty_block.x = randint(0, COUNT_BLOCKS - 1)
+        empty_block.y = randint(0, COUNT_BLOCKS - 1)
     return empty_block
 
 
 def start_the_game():
-    snake_blocks = [SnakeBlock(9, 9), SnakeBlock(9, 9), SnakeBlock(9, 10)]
+    snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
+    food = getRandomEmptyBlock()
     d_row = 0
     d_col = 1
     SNAKE_COLOR, FRAME_COLOR, R_COLOR1, R_COLOR2 = getR_COLOR(
@@ -87,7 +83,6 @@ def start_the_game():
         screen.fill(FRAME_COLOR)
 
         for row in range(COUNT_BLOCKS):
-
             for column in range(COUNT_BLOCKS):
 
                 if column % 2 == 0 and row % 2 != 0:
@@ -105,6 +100,12 @@ def start_the_game():
             print('crash')
             pygame.quit()
             sys.exit()
+
+        FOOD_RCOLOR = getR_COLOR()
+        draw_block(FOOD_RCOLOR, food.x, food.y)
+
+        if food == head:
+            food = getRandomEmptyBlock()
 
         for block in snake_blocks:
             draw_block(SNAKE_COLOR, block.x, block.y)
