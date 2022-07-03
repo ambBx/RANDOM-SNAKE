@@ -10,7 +10,6 @@ courier = pygame.font.SysFont("Courier",20) # выбераем размер шр
 SIZE_BLOCK = 20
 PALE_GREEN = (152, 251, 152)
 
-
 size = [350, 450]
 COUNT_BLOCKS = 16
 MARGIN = 1
@@ -55,26 +54,29 @@ def getRandomEmptyBlock():
 
 
 def showMenu():
-    while True:
-        menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
+    menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
                                       title_background_color=getR_COLOR(),
                                       title_font_shadow=True,
                                       widget_padding=25)
-        menu = pygame_menu.Menu('ZZZмейка', 350, 450,
+    menu = pygame_menu.Menu('ZZZмейка', 350, 450,
                                 theme=menuTheme)
 
-        menu.add.text_input('Имя :', default='Игрок')
+    name_box = menu.add.text_input('Имя :', default='Игрок',onchange=getPlayerName)
 
-        menu.add.button('Играть', start_the_game)
-        menu.add.button('Выход', pygame_menu.events.EXIT)
-        menu.mainloop(screen)
+    menu.add.button('Играть', start_the_game, name_box)
+    menu.add.button('Выход', pygame_menu.events.EXIT)
+    menu.mainloop(screen)
 
+def getPlayerName(value):
+    player_name = value
 
 def gameOver():
     showMenu()
 
 
-def start_the_game():
+def start_the_game(namebox):
+    PLAYER_NAME=namebox.get_value()
+    
     snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
     food = getRandomEmptyBlock()
     d_row = 0
@@ -107,6 +109,12 @@ def start_the_game():
 
         text_total = courier.render (f"Очки: {total}", 0 , (255,255,255))    # задаем цвет
         screen.blit(text_total,(SIZE_BLOCK, 20*SIZE_BLOCK))   # - располагаем текст на экране
+
+        text_speed = courier.render (f"Уровень: {speed}", 0 , (255,255,255))    # задаем цвет
+        screen.blit(text_speed,(10*SIZE_BLOCK, 20*SIZE_BLOCK))   # - располагаем текст на экране
+
+        text_player_name = courier.render (f"Игрок: {PLAYER_NAME}", 0 , (255,255,255))    # задаем цвет
+        screen.blit(text_player_name,(SIZE_BLOCK, 18*SIZE_BLOCK))   # - располагаем текст на экране
 
         for row in range(COUNT_BLOCKS):
             for column in range(COUNT_BLOCKS):
