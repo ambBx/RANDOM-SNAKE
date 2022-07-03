@@ -52,6 +52,16 @@ def getRandomEmptyBlock():
         empty_block.y = randint(0, COUNT_BLOCKS - 1)
     return empty_block
 
+def showMenu():
+    menu = pygame_menu.Menu('Welcome', 350, 350,
+                        theme=pygame_menu.themes.THEME_BLUE)
+
+    menu.add.text_input('Имя :', default='Игрок')
+
+    menu.add.button('Играть', start_the_game)
+    menu.add.button('Выход', pygame_menu.events.EXIT)
+
+    menu.mainloop(screen)
 
 def start_the_game():
     snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
@@ -97,9 +107,7 @@ def start_the_game():
 
         head = snake_blocks[-1]
         if not head.is_inside():
-            print('crash')
-            pygame.quit()
-            sys.exit()
+            showMenu()
 
         FOOD_RCOLOR = getR_COLOR()
         draw_block(FOOD_RCOLOR, food.x, food.y)
@@ -119,13 +127,4 @@ def start_the_game():
         pygame.display.flip()
         timer.tick(5)
 
-
-menu = pygame_menu.Menu('Welcome', 350, 350,
-                        theme=pygame_menu.themes.THEME_BLUE)
-
-menu.add.text_input('Имя :', default='Путин')
-
-menu.add.button('Играть', start_the_game)
-menu.add.button('Выход', pygame_menu.events.EXIT)
-
-menu.mainloop(screen)
+showMenu()
