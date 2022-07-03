@@ -27,7 +27,7 @@ def draw_block(color, row, column):
 
 
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption('Zмейка')
 timer = pygame.time.Clock()
 
 
@@ -105,6 +105,7 @@ def start_the_game():
         draw_block(FOOD_RCOLOR, food.x, food.y)
 
         if food == head:
+            snake_blocks.append(food)
             food = getRandomEmptyBlock()
 
         for block in snake_blocks:
