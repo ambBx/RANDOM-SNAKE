@@ -2,10 +2,12 @@ import pygame
 import sys
 from random import randint
 import pygame_menu
-
+from time import sleep
 
 pygame.init()
 courier = pygame.font.SysFont("Courier",20) # выбераем размер шрифта
+
+font = pygame.font.SysFont("Open Sans",25)
 
 SIZE_BLOCK = 20
 PALE_GREEN = (152, 251, 152)
@@ -58,7 +60,7 @@ def showMenu():
                                       title_background_color=getR_COLOR(),
                                       title_font_shadow=True,
                                       widget_padding=25)
-    menu = pygame_menu.Menu('ZZZмейка', 350, 450,
+    menu = pygame_menu.Menu('Zzzмейка', 350, 450,
                                 theme=menuTheme)
 
     name_box = menu.add.text_input('Имя :', default='Игрок',onchange=getPlayerName)
@@ -70,7 +72,19 @@ def showMenu():
 def getPlayerName(value):
     player_name = value
 
-def gameOver():
+def gameOver(PLAYER_NAME,total):
+    screen.fill(getR_COLOR())
+
+    text_player_name = font.render (f"Игрок: {PLAYER_NAME}", 0 , (255,255,255))    
+    screen.blit(text_player_name,(SIZE_BLOCK*5, SIZE_BLOCK*7))   
+
+    text_total = font.render (f"Очки: {total}", 0 , (255,255,255))   
+    screen.blit(text_total,(SIZE_BLOCK*5, SIZE_BLOCK*9))   
+
+    
+
+    pygame.display.flip()
+    sleep(3)
     showMenu()
 
 
@@ -131,7 +145,7 @@ def start_the_game(namebox):
 
         head = snake_blocks[-1]
         if not head.is_inside():
-            gameOver()
+            gameOver(PLAYER_NAME,total)
 
         FOOD_RCOLOR = getR_COLOR()
         draw_block(FOOD_RCOLOR, food.x, food.y)
@@ -147,7 +161,7 @@ def start_the_game(namebox):
 
         new_head = SnakeBlock(head.x + d_row, head.y + d_col)
         if new_head in snake_blocks:
-            gameOver()
+            gameOver(PLAYER_NAME,total)
         snake_blocks.append(new_head)
         snake_blocks.pop(0)
 
