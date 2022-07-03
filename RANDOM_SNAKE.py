@@ -3,8 +3,9 @@ import sys
 from random import randint
 import pygame_menu
 
-pygame.init()
 
+pygame.init()
+#courier = pygame.font.SysFont("Courier",20) # выбераем размер шрифта 
 
 SIZE_BLOCK = 20
 PALE_GREEN = (152, 251, 152)
@@ -76,6 +77,8 @@ def start_the_game():
     food = getRandomEmptyBlock()
     d_row = 0
     d_col = 1
+    speed = 1
+  # total = 0  создаем переменную тотал
     SNAKE_COLOR, FRAME_COLOR, R_COLOR1, R_COLOR2 = getR_COLOR(
     ), getR_COLOR(), getR_COLOR(), getR_COLOR()
 
@@ -99,6 +102,9 @@ def start_the_game():
                     d_col = 1
 
         screen.fill(FRAME_COLOR)
+        
+       #text_total = courier.render (f"Total: {total}", 0 , BLACK) # задаем цвет
+       #screen.blit(text_total,(SIZE_BLOCK, SIZE_BLOCK) # - располагаем текст на экране
 
         for row in range(COUNT_BLOCKS):
             for column in range(COUNT_BLOCKS):
@@ -122,6 +128,8 @@ def start_the_game():
         draw_block(FOOD_RCOLOR, food.x, food.y)
 
         if food == head:
+            speed = total//5+1
+          # total+=1 - зависимость счета от еды
             snake_blocks.append(food)
             food = getRandomEmptyBlock()
 
@@ -136,7 +144,7 @@ def start_the_game():
         
 
         pygame.display.flip()
-        timer.tick(5)
+        timer.tick(3+speed)
 
 
 showMenu()
