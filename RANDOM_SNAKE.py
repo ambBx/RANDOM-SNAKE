@@ -25,6 +25,9 @@ class SnakeBlock:
         self.x = x
         self.y = y
 
+    def __eq__(self,other):
+        return isinstance(other, SnakeBlock) and self.x == other.x and self.y == other.y
+
 
 def draw_block(color, row, column):
     pygame.draw.rect(screen, color, [5 + column * SIZE_BLOCK + MARGIN * (
