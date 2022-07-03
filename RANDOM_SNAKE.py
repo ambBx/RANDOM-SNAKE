@@ -5,13 +5,13 @@ import pygame_menu
 
 
 pygame.init()
-#courier = pygame.font.SysFont("Courier",20) # выбераем размер шрифта 
+courier = pygame.font.SysFont("Courier",20) # выбераем размер шрифта
 
 SIZE_BLOCK = 20
 PALE_GREEN = (152, 251, 152)
 
 
-size = [350, 350]
+size = [350, 450]
 COUNT_BLOCKS = 16
 MARGIN = 1
 snake_blocks = []
@@ -60,7 +60,7 @@ def showMenu():
                                       title_background_color=getR_COLOR(),
                                       title_font_shadow=True,
                                       widget_padding=25)
-        menu = pygame_menu.Menu('ZZZмейка', 350, 350,
+        menu = pygame_menu.Menu('ZZZмейка', 350, 450,
                                 theme=menuTheme)
 
         menu.add.text_input('Имя :', default='Игрок')
@@ -69,8 +69,10 @@ def showMenu():
         menu.add.button('Выход', pygame_menu.events.EXIT)
         menu.mainloop(screen)
 
+
 def gameOver():
     showMenu()
+
 
 def start_the_game():
     snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
@@ -78,7 +80,7 @@ def start_the_game():
     d_row = 0
     d_col = 1
     speed = 1
-  # total = 0  создаем переменную тотал
+    total = 0  # создаем переменную тотал
     SNAKE_COLOR, FRAME_COLOR, R_COLOR1, R_COLOR2 = getR_COLOR(
     ), getR_COLOR(), getR_COLOR(), getR_COLOR()
 
@@ -102,14 +104,14 @@ def start_the_game():
                     d_col = 1
 
         screen.fill(FRAME_COLOR)
-        
-       #text_total = courier.render (f"Total: {total}", 0 , BLACK) # задаем цвет
-       #screen.blit(text_total,(SIZE_BLOCK, SIZE_BLOCK) # - располагаем текст на экране
+
+        text_total = courier.render (f"Очки: {total}", 0 , (255,255,255))    # задаем цвет
+        screen.blit(text_total,(SIZE_BLOCK, 20*SIZE_BLOCK))   # - располагаем текст на экране
 
         for row in range(COUNT_BLOCKS):
             for column in range(COUNT_BLOCKS):
-                #шашечки
-                if column % 2 == 0 and row % 2 != 0: 
+                # шашечки
+                if column % 2 == 0 and row % 2 != 0:
                     color = R_COLOR1
                 elif column % 2 != 0 and row % 2 == 0:
                     color = R_COLOR1
@@ -123,13 +125,12 @@ def start_the_game():
         if not head.is_inside():
             gameOver()
 
-
         FOOD_RCOLOR = getR_COLOR()
         draw_block(FOOD_RCOLOR, food.x, food.y)
 
         if food == head:
-            speed = total//5+1
-          # total+=1 - зависимость счета от еды
+            speed = total // 5 + 1
+            total += 1  # зависимость счета от еды
             snake_blocks.append(food)
             food = getRandomEmptyBlock()
 
@@ -141,10 +142,9 @@ def start_the_game():
             gameOver()
         snake_blocks.append(new_head)
         snake_blocks.pop(0)
-        
 
         pygame.display.flip()
-        timer.tick(3+speed)
+        timer.tick(5 + speed)
 
 
 showMenu()
