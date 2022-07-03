@@ -54,19 +54,19 @@ def getRandomEmptyBlock():
 
 
 def showMenu():
-    menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
-                                  title_background_color=getR_COLOR(),
-                                  title_font_shadow=True,
-                                  widget_padding=25)
-    menu = pygame_menu.Menu('ZZZмейка', 350, 350,
-                            theme=menuTheme)
+    while True:
+        menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
+                                      title_background_color=getR_COLOR(),
+                                      title_font_shadow=True,
+                                      widget_padding=25)
+        menu = pygame_menu.Menu('ZZZмейка', 350, 350,
+                                theme=menuTheme)
 
-    menu.add.text_input('Имя :', default='Игрок')
+        menu.add.text_input('Имя :', default='Игрок')
 
-    menu.add.button('Играть', start_the_game)
-    menu.add.button('Выход', pygame_menu.events.EXIT)
-
-    menu.mainloop(screen)
+        menu.add.button('Играть', start_the_game)
+        menu.add.button('Выход', pygame_menu.events.EXIT)
+        menu.mainloop(screen)
 
 def gameOver():
     showMenu()
@@ -102,8 +102,8 @@ def start_the_game():
 
         for row in range(COUNT_BLOCKS):
             for column in range(COUNT_BLOCKS):
-
-                if column % 2 == 0 and row % 2 != 0:
+                #шашечки
+                if column % 2 == 0 and row % 2 != 0: 
                     color = R_COLOR1
                 elif column % 2 != 0 and row % 2 == 0:
                     color = R_COLOR1
