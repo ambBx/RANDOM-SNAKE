@@ -77,6 +77,7 @@ def start_the_game():
     food = getRandomEmptyBlock()
     d_row = 0
     d_col = 1
+    speed = 1
   # total = 0  создаем переменную тотал
     SNAKE_COLOR, FRAME_COLOR, R_COLOR1, R_COLOR2 = getR_COLOR(
     ), getR_COLOR(), getR_COLOR(), getR_COLOR()
@@ -127,6 +128,7 @@ def start_the_game():
         draw_block(FOOD_RCOLOR, food.x, food.y)
 
         if food == head:
+            speed = total//5+1
           # total+=1 - зависимость счета от еды
             snake_blocks.append(food)
             food = getRandomEmptyBlock()
@@ -142,7 +144,7 @@ def start_the_game():
         
 
         pygame.display.flip()
-        timer.tick(5)
+        timer.tick(3+speed)
 
 
 showMenu()
