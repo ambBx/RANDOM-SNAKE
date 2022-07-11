@@ -3,6 +3,7 @@ import sys
 from random import randint
 import pygame_menu
 from time import sleep
+from database import *
 
 pygame.init()
 courier = pygame.font.SysFont("Courier", 20)  # выбераем размер шрифта
@@ -33,6 +34,9 @@ def draw_block(color, row, column):
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Zмейка')
 timer = pygame.time.Clock()
+
+
+create_db()
 
 
 
@@ -70,7 +74,7 @@ def showMenu():
                             theme=menuTheme)
 
     name_box = menu.add.text_input(
-        'Имя :', default='Борис', onchange=getPlayerName)
+        'Имя :', default='Игрок', onchange=getPlayerName)
 
     #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
 
@@ -82,22 +86,8 @@ def showMenu():
 def getPlayerName(value):
     player_name = value
 
-def write_scores(name, score, filename='high_scores.txt'):
-    with open(filename, 'a+') as fh:
-        line = '%s %d\n' % (str(name), int(score))
-        fh.write(line)
 
-def read_scores(filename='high_scores.txt'):
-    with open(filename, 'rU') as fh:
-        scores = []
-    
-        for line in fh:
-            name , _, score = line.partition(' ')
-            name = name.strip()
-            score = int(score.strip())
-            scores.append((name, score))
-    
-        return scores
+
 
 def gameOver(PLAYER_NAME, total):
     screen.fill(getR_COLOR())
@@ -119,16 +109,14 @@ def gameOver(PLAYER_NAME, total):
 
 def showHighScores():
     screen.fill(getR_COLOR())
-    scores=read_scores()
-    for name, score in enumerate(scores):
-        i=SIZE_BLOCK
-        text_line = font.render(f"{name}   {score} ", True, (255, 255, 255))
-        screen.blit(text_line, (SIZE_BLOCK*2, SIZE_BLOCK*5+i))
+    scores=get_best()
+    for index, gamer in enumerate(scores):
+        name, score = gamer
+        s = f"{index + 1}.  {name}     {score}"
+        text_line = font.render(s, True, (255, 255, 255))
+        screen.blit(text_line, (SIZE_BLOCK*2, SIZE_BLOCK*2*index))
         pygame.display.flip()
-        i=i+i
-    #screen.blit(text_line, (SIZE_BLOCK*2, SIZE_BLOCK*5+i))
-    pygame.display.flip()
-
+    
 
 def start_the_game(namebox):
     PLAYER_NAME = namebox.get_value()
@@ -198,7 +186,7 @@ def start_the_game(namebox):
         if food == head:
             speed = total // 2 + 1
             total += 1  
-            SnakeBlock.length += 10
+            SnakeBlock.length += 1
             #snake_blocks.append(food)
             food = getRandomEmptyBlock()
 
