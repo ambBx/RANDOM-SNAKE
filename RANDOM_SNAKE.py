@@ -41,6 +41,7 @@ create_db()
 
 
 
+
 class SnakeBlock:
     length = None
     def __init__(self, x, y):
@@ -73,8 +74,9 @@ def showMenu():
     menu = pygame_menu.Menu('Zzzмейка', 350, 450,
                             theme=menuTheme)
 
+    recent_player=get_recent_player()
     name_box = menu.add.text_input(
-        'Имя :', default='Игрок', onchange=getPlayerName)
+        'Имя :', default=f'{recent_player}', onchange=getPlayerName)
 
     #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
 
