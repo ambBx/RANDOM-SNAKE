@@ -18,6 +18,7 @@ COUNT_BLOCKS = 16
 MARGIN = 1
 snake_blocks = []
 scores = []
+recent_player = None
 
 
 def getR_COLOR():
