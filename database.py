@@ -1,6 +1,6 @@
 import sqlite3
 
-
+    
 def create_db():
     db = sqlite3.connect('snake.sqlite')
     cur = db.cursor()
@@ -15,7 +15,7 @@ def create_db():
 		players text
 		)
 		""")
-    db.close()
+    
 
 
 def get_best():
@@ -53,3 +53,5 @@ def write_scores(player, score):
     cur.execute(f"INSERT INTO RECENT (players) VALUES ('{player}')")
     db.commit()
     db.close()
+
+

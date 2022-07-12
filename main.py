@@ -16,8 +16,9 @@ PALE_GREEN = (152, 251, 152)
 size = [350, 450]
 COUNT_BLOCKS = 16
 MARGIN = 1
-snake_blocks = []
 scores = []
+snake_blocks = []
+bonus_food = []
 recent_player = None
 
 
@@ -64,8 +65,33 @@ def getRandomEmptyBlock():
     while empty_block in snake_blocks:
         empty_block.x = randint(0, COUNT_BLOCKS - 1)
         empty_block.y = randint(0, COUNT_BLOCKS - 1)
-    return empty_block
-
+    return empty_block 
+def createbONUS(empty_block):
+    x = 0
+    y = 0
+    bonus_block = SnakeBlock(x, y)
+    bonus_block1 = SnakeBlock(x, y)
+    bonus_block2 = SnakeBlock(x, y)
+    bonus_block3 = SnakeBlock(x, y)
+    
+    s = getRandomEmptyBlock()
+    bonus_block.x = s.x
+    bonus_block.y = s.y
+    bonus_food.append(bonus_block)
+    bonus_block1.x = bonus_block.x+1
+    bonus_food.append(bonus_block1)
+    bonus_block2.y = bonus_block.y+1
+    bonus_food.append(bonus_block2)
+    bonus_block3.x = bonus_block.x+1
+    bonus_block3.y = bonus_block.y+1
+    bonus_food.append(bonus_block3)
+    return(bonus_food)
+def draw_bonus(bonus_food):
+    BONUS_RCOLOR = getR_COLOR()
+    for bonus_block in bonus_food:
+        draw_block(BONUS_RCOLOR, bonus_block.x, bonus_block.y)
+            
+        
 
 def showMenu():
     menuTheme = pygame_menu.Theme(background_color=getR_COLOR(),
@@ -126,6 +152,8 @@ def start_the_game(namebox):
     SnakeBlock.length = 3
     snake_blocks = [SnakeBlock(9, 8), SnakeBlock(9, 9), SnakeBlock(9, 10)]
     food = getRandomEmptyBlock()
+    empty_block = getRandomEmptyBlock()
+    bonus = createbONUS(empty_block)
     d_row = 0
     d_col = 1
     speed = 1
@@ -179,12 +207,21 @@ def start_the_game(namebox):
 
                 draw_block(color, row, column)
 
+        if (total + 1) //2 != 0:
+            
+            empty_block = getRandomEmptyBlock()
+            bonus_food = createbONUS(empty_block)
+            draw_bonus(bonus_food)
+            
         head = snake_blocks[-1]
         if not head.is_inside():
             gameOver(PLAYER_NAME, total)
 
         FOOD_RCOLOR = getR_COLOR()
         draw_block(FOOD_RCOLOR, food.x, food.y)
+        empty_block = getRandomEmptyBlock()
+        bonus = createbONUS(empty_block)
+       
 
         if food == head:
             speed = total // 2 + 1
@@ -192,6 +229,7 @@ def start_the_game(namebox):
             SnakeBlock.length += 1
             #snake_blocks.append(food)
             food = getRandomEmptyBlock()
+            bonus = createbONUS(empty_block)
 
         for block in snake_blocks:
             draw_block(SNAKE_COLOR, block.x, block.y)
